@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 class Servicio (ABC):
     def __init__(self, nombre):
         self.__nombre = nombre
+    def get_nombre(self):
+        return self.nombre
+    
     @abstractmethod
     def calcular_costo(self):
         pass

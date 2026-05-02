@@ -1,17 +1,21 @@
 from cliente import Cliente
-try:
-    cliente1 = Cliente("Juan Pérez", "123456789")
-    print(cliente1.mostrar_info())
-except ValueError as e:
-    print(f"Error: {e}")
-except Exception:
-    pass
-
 from servicio import ServicioSala
-sala = ServicioSala (2)
-print(sala.descripcion())
-print("Costo del servicio:", sala.calcular_costo())
-
 from reserva import Reserva
-reserva1 = Reserva(cliente1, sala)
+
+cliente1 = Cliente("Juan Pérez", "123456789") #cliente ejemplo
+
+servicio1 = ServicioSala(2) #servicio ejemplo 2 horas
+
+reserva1 = Reserva(cliente1, servicio1, "2026-05-01")
+print("----RESERVA INICIAL----")
+reserva1.mostrar_reserva() #muestra datos iniciales
+
+print("\n----CONFIRMAR RESERVA----")
+reserva1.confirmar() #confirma la reserva
+reserva1.mostrar_reserva() 
+
+print("\n----CANCELAR RESERVA----")
+reserva1.cancelar() #cancela la reserva
 reserva1.mostrar_reserva()
+
+

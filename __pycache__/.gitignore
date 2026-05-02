@@ -1,0 +1,9 @@
+# Ignorar carpetas de caché de Python
+__pycache__/
+*.py[cod]
+
+# Ignorar archivos de configuración de VS Code
+.vscode/
+
+# Ignorar archivos de log 
+*.log
