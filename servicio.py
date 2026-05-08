@@ -1,6 +1,11 @@
-#SERVICIOS ESPECIALES 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+5#SERVICIOS ESPECIALES 
 class Servicio:
-    def __init__(self, nombre, precio_origonal):
+    def __init__(self, nombre, precio_original):
         self._nombre = nombre
         self._precio_base = precio_original
 

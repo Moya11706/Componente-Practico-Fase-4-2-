@@ -1,0 +1,4 @@
+2026-05-07 20:48:09.474209 - Cliente creado: jeimy
+2026-05-07 20:57:02.943360 - Cliente creado: jeimy
+2026-05-07 20:57:18.655954 - Servicio creado: sala
+2026-05-07 20:59:03.820844 - Reserva creada: jeimy - 2.0 horas - 2026-04-03
