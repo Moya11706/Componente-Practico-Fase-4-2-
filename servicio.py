@@ -1,137 +1,88 @@
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
-5#SERVICIOS ESPECIALES 
 class Servicio:
-    def __init__(self, nombre, precio_original):
-        self._nombre = nombre
-        self._precio_base = precio_original
 
-    def verificar_disponibilidad(self):
-        pass
+    def __init__(self, nombre, precio_hora):
+
+        if not nombre.strip():
+            raise ValueError("El nombre no puede estar vacío")
+
+        if precio_hora <= 0:
+            raise ValueError("El precio debe ser mayor que cero")
+
+        self.nombre = nombre
+        self.precio_hora = precio_hora
+
+    def calcular_costo(self, horas):
+
+        if horas <= 0:
+            raise ValueError("Las horas deben ser mayores que cero")
+
+        return self.precio_hora * horas
+
+    def mostrar_info(self):
+
+        return (
+            f"Servicio: {self.nombre} | "
+            f"Precio por hora: ${self.precio_hora}"
+        )
 
 
-class ErrorServicioInvalido(Exception):
-    pass
+
+# RESERVA DE LA SALA
+
 
 class ReservaSala(Servicio):
-    def __init__(self, nombre: str, precio_original: float, capacidad: int):
-        if not isinstance(capacidad, int) or capacidad < 1:
-            raise ErrorServicioInvalido(f"Capacidad inválida: {capacidad}")
-        super().__init__(nombre, precio_original)
-        self._capacidad = capacidad
 
-    
-    def capacidad(self) -> int:
-        return self._capacidad
+    def __init__(self, nombre, precio_hora, capacidad):
 
-    def calcular_costo(self, horas: float, descuento: float = 0.0, **kwargs) -> float:
-        self.verificar_disponibilidad()
+        super().__init__(nombre, precio_hora)
 
-        if not isinstance(horas, (int, float)) or horas <= 0:
-            raise ErrorServicioInvalido(f"Horas inválidas: {horas}")
-        if not (0 <= descuento <= 100):
-            raise ErrorServicioInvalido(f"Descuento inválido: {descuento}")
+        self.capacidad = capacidad
 
-        costo = self._precio_base * horas * (1-descuento / 100)
-        logger.debug(f"Sala '{self._nombre}': {horas}h × ${self._precio_base:,.0f} - {descuento}% = ${costo:,.0f}")
-        return round(costo, 2)
+    def mostrar_info(self):
 
-    def describir(self) -> str:
-        return f"Sala de reuniones | Capacidad: {self._capacidad} personas"
+        return (
+            f"Reserva de Sala: {self.nombre} | "
+            f"Capacidad: {self.capacidad} personas | "
+            f"Precio: ${self.precio_hora}/hora"
+        )
+
+
+
+# ALQUILER DEL EQUIPO
 
 
 class AlquilerEquipo(Servicio):
-    IVA = 0.19
 
-    def __init__(self, nombre: str, precio_base: float, tipo_equipo: str):
-        if not isinstance(tipo_equipo, str) or not tipo_equipo.strip():
-            raise ErrorServicioInvalido("El tipo de equipo no puede estar vacío.")
-        super().__init__(nombre, precio_base)
-        self._tipo_equipo = tipo_equipo.strip()
+    def __init__(self, nombre, precio_hora, tipo_equipo):
 
-    
-    def tipo_equipo(self) -> str:
-        return self._tipo_equipo
+        super().__init__(nombre, precio_hora)
 
-    def calcular_costo(self, horas: float, con_seguro: bool = False, **kwargs) -> float:
-        self.verificar_disponibilidad()
+        self.tipo_equipo = tipo_equipo
 
-        if not isinstance(horas, (int, float)) or horas <= 0:
-            raise ErrorServicioInvalido(f"Horas inválidas: {horas}")
+    def mostrar_info(self):
 
-        costo_base = self._precio_base * horas
-        costo_iva = costo_base * self.IVA
-        recargo_seguro = costo_base * 0.10 if con_seguro else 0.0
-        costo_final = costo_base + costo_iva + recargo_seguro
+        return (
+            f"Alquiler de Equipo: {self.nombre} | "
+            f"Tipo: {self.tipo_equipo} | "
+            f"Precio: ${self.precio_hora}/hora"
+        )
 
-        logger.debug(f"Equipo '{self._nombre}': {horas}h × ${self._precio_base:,.0f} + IVA + seguro={'Sí' if con_seguro else 'No'} = ${costo_final:,.0f}")
-        return round(costo_final, 2)
 
-    def describir(self) -> str:
-        return f"Alquiler de equipo | Tipo: {self._tipo_equipo} | IVA incluido: {int(self.IVA * 100)}%"
+
+# ASESORÍA TÉCNICA
 
 
 class AsesoriaTecnica(Servicio):
-    NIVELES = {
-        "básico":     1.0,
-        "intermedio": 1.5,
-        "avanzado":   2.0,
-    }
 
-    def __init__(self, nombre: str, precio_base: float, especialidad: str):
-        if not isinstance(especialidad, str) or not especialidad.strip():
-            raise ErrorServicioInvalido("La especialidad no puede estar vacía.")
-        super().__init__(nombre, precio_base)
-        self._especialidad = especialidad.strip()
+    def __init__(self, nombre, precio_hora, especialista):
 
-    
-    def especialidad(self) -> str:
-        return self._especialidad
+        super().__init__(nombre, precio_hora)
 
-    def calcular_costo(self, horas: float, nivel: str = "básico", **kwargs) -> float:
-        self.verificar_disponibilidad()
+        self.especialista = especialista
 
-        if not isinstance(horas, (int, float)) or horas <= 0:
-            raise ErrorServicioInvalido(f"Horas inválidas: {horas}")
+    def mostrar_info(self):
 
-        nivel_lower = nivel.lower().strip()
-        if nivel_lower not in self.NIVELES:
-            raise ErrorServicioInvalido(f"Nivel '{nivel}' no válido. Opciones: {list(self.NIVELES.keys())}")
-
-        costo = self._precio_base * horas * self.NIVELES[nivel_lower]
-        logger.debug(f"Asesoría '{self._nombre}': {horas}h × ${self._precio_base:,.0f} × {self.NIVELES[nivel_lower]} ({nivel}) = ${costo:,.0f}")
-        return round(costo, 2)
-
-    def describir(self) -> str:
-        niveles_str = " | ".join(f"{n}: x{m}" for n, m in self.NIVELES.items())
-        return f"Asesoría Técnica | Especialidad: {self._especialidad} | Niveles: [{niveles_str}]"
-
-
-
-from abc import ABC, abstractmethod 
-class Servicio (ABC):
-    def __init__(self, nombre):
-        self.__nombre = nombre
-    def get_nombre(self):
-        return self.__nombre
-    
-    @abstractmethod
-    def calcular_costo(self):
-        pass
-    @abstractmethod
-    def descripcion(self):
-        pass
-class ServicioSala(Servicio):
-    def __init__(self, horas):
-        super().__init__("servicio de sala")
-        self.horas = horas
-    def calcular_costo(self):
-        return self.horas * 50
-    def descripcion (self):
-        return f"Reserva de sala por {self.horas} horas"
-    
-    
-        
+        return(
+            f"Asesoría Técnica: {self.nombre} | "
+            f"Especialista: {self.especialista} | "
+            f"Precio: ${self.precio_hora}/hora")
