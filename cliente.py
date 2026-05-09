@@ -10,11 +10,11 @@ class Cliente(Entidad):
         self.nombre = nombre
         self.documento = documento
 
-    @property
+  
     def nombre(self):
         return self._nombre
 
-    @nombre.setter
+ 
     def nombre(self, valor):
         try:
             valor = Entidad.validar_texto(valor, "nombre")
@@ -24,11 +24,11 @@ class Cliente(Entidad):
         except ValueError as e:
             raise ClienteInvalidoError(str(e)) from e
 
-    @property
+   
     def documento(self):
         return self._documento
 
-    @documento.setter
+ 
     def documento(self, valor):
         try:
             valor = Entidad.validar_texto(valor, "documento")
