@@ -71,7 +71,7 @@ except Exception as e:
 
 # OPERACIÓN 7
 try:
-    reserva2 = Reserva(cliente1, servicio2, datetime.date.today(), horas=2)
+    reserva2 = Reserva(cliente1, serviciog2, datetime.date.today(), horas=2)
     lista_reservas.append(reserva2)
     guardar_log("Reserva 2 creada")
 except Exception as e:
