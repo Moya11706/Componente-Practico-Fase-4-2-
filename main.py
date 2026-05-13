@@ -1,3 +1,5 @@
+import datetime
+
 from cliente import Cliente
 from servicio import ReservaSala
 from reserva import Reserva, registrar_evento
@@ -21,9 +23,10 @@ while True:
     # -------------------------
     if opcion == "1":
         nombre = input("Ingrese el nombre del cliente: ")
+        email = input("Ingrese el email del cliente: ")
         documento = input("Ingrese el documento del cliente: ")
         try:
-            cliente = Cliente(nombre, documento)
+            cliente = Cliente(nombre, email, documento)
             clientes.append(cliente)
             registrar_evento(f"Cliente creado: {nombre}")
             print("✅ Cliente creado exitosamente")
@@ -59,7 +62,7 @@ while True:
             # 🔹 Seleccionar cliente
             print("\n--- CLIENTES DISPONIBLES ---")
             for i, c in enumerate(clientes, 1):
-                print(f"{i}. {c.get_nombre()}")
+                print(f"{i}. {c.nombre}")
 
             op_cliente = int(input("Seleccione un cliente: "))
             if op_cliente < 1 or op_cliente > len(clientes):
@@ -84,7 +87,12 @@ while True:
             servicio = servicios[op_servicio - 1]
 
             # 🔹 Datos de reserva
-            fecha = input("Ingrese la fecha (YYYY-MM-DD): ")
+            fecha_str = input("Ingrese la fecha (YYYY-MM-DD): ")
+            try:
+                fecha = datetime.datetime.strptime(fecha_str, "%Y-%m-%d").date()
+            except ValueError:
+                print("❌ Fecha inválida. Use YYYY-MM-DD")
+                continue
 
             horas = float(input("Ingrese horas del servicio: "))
             if horas <= 0:
@@ -103,13 +111,10 @@ while True:
                 continue
 
             # 🔹 Crear reserva
-            reserva = Reserva(cliente, servicio, fecha)
-            reserva.horas = horas
-            reserva.descuento = descuento
-
+            reserva = Reserva(cliente, servicio, fecha, horas=horas, descuento=descuento)
             reservas.append(reserva)
 
-            registrar_evento(f"Reserva creada: {cliente.get_nombre()} - {horas}h - {fecha}")
+            registrar_evento(f"Reserva creada: {cliente.nombre} - {horas}h - {fecha}")
             print("✅ Reserva creada exitosamente")
 
         except ValueError as e:
@@ -127,7 +132,7 @@ while True:
 
             for i, r in enumerate(reservas, 1):
                 print(f"\n📌 Reserva #{i}")
-                print("Cliente:", r.cliente.get_nombre())
+                print("Cliente:", r.cliente.nombre)
                 print("Servicio:", r.servicio)
                 print("Fecha:", r.fecha)
                 print("Horas:", getattr(r, "horas", "No definido"))

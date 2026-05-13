@@ -1,14 +1,8 @@
 from excepciones import ReservaError
 import datetime
 
-
-def registrar_evento(mensaje):
-    with open("logs.txt", "a", encoding="utf-8") as archivo:
-        archivo.write(f"{datetime.datetime.now()} - {mensaje}\n")
-
-
 class Reserva:
-    def __init__(self, cliente, servicio, fecha, horas=1, descuento=0):
+    def __init__(self, cliente, servicio, fecha, horas=1):
         # Validaciones
         if cliente is None:
             raise ReservaError("El cliente no puede ser nulo")
@@ -22,15 +16,11 @@ class Reserva:
         if not isinstance(fecha, datetime.date):
             raise ReservaError("La fecha debe ser válida")
 
-        if descuento < 0 or descuento > 100:
-            raise ReservaError("El descuento debe estar entre 0 y 100")
-
         # Atributos privados (encapsulación)
         self._cliente = cliente
         self._servicio = servicio
         self._fecha = fecha
         self._horas = horas
-        self._descuento = descuento
         self._estado = "pendiente"
 
     # -------------------------
@@ -53,22 +43,6 @@ class Reserva:
     def horas(self):
         return self._horas
 
-    @horas.setter
-    def horas(self, valor):
-        if valor <= 0:
-            raise ReservaError("Las horas deben ser mayores a 0")
-        self._horas = valor
-
-    @property
-    def descuento(self):
-        return self._descuento
-
-    @descuento.setter
-    def descuento(self, valor):
-        if valor < 0 or valor > 100:
-            raise ReservaError("El descuento debe estar entre 0 y 100")
-        self._descuento = valor
-
     @property
     def estado(self):
         return self._estado
@@ -84,14 +58,7 @@ class Reserva:
         self._estado = "cancelada"
 
     def calcular_total(self):
-        return self._servicio.calcular_costo(self._horas, descuento=self._descuento)
-
-    def procesar_pago(self, tasa_impuesto):
-        if tasa_impuesto < 0 or tasa_impuesto > 1:
-            raise ReservaError("La tasa de impuesto debe estar entre 0 y 1")
-
-        total = self.calcular_total()
-        return round(total + (total * tasa_impuesto), 2)
+        return self._servicio.calcular_costo(self._horas)
 
     # -------------------------
     # REPRESENTACIÓN

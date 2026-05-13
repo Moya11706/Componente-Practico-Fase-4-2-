@@ -1,4 +1,6 @@
-class Servicio:
+import abc
+
+class Servicio(abc.ABC):
 
     def __init__(self, nombre, precio_hora):
 
@@ -8,81 +10,88 @@ class Servicio:
         if precio_hora <= 0:
             raise ValueError("El precio debe ser mayor que cero")
 
-        self.nombre = nombre
-        self.precio_hora = precio_hora
+        self._nombre = nombre
+        self._precio_hora = precio_hora
 
-    def calcular_costo(self, horas):
+    # 🔹 Getter (encapsulación)
+    def get_nombre(self):
+        return self._nombre
+
+    def get_precio(self):
+        return self._precio_hora
+
+    # 🔹 Método con polimorfismo
+    def calcular_costo(self, horas, descuento=0):
 
         if horas <= 0:
             raise ValueError("Las horas deben ser mayores que cero")
 
-        return self.precio_hora * horas
+        if descuento < 0 or descuento > 100:
+            raise ValueError("Descuento inválido")
 
-    def mostrar_info(self):
+        costo = self._precio_hora * horas
+        costo_final = costo - (costo * (descuento / 100))
 
-        return (
-            f"Servicio: {self.nombre} | "
-            f"Precio por hora: ${self.precio_hora}"
-        )
+        return round(costo_final, 2)
+
+    # 🔹 Método abstracto
+    @abc.abstractmethod
+    def describir(self):
+        pass
+
+    def __str__(self):
+        return f"{self._nombre} - ${self._precio_hora}/hora"
 
 
-
-# RESERVA DE LA SALA
-
+# -------------------------
+# RESERVA DE SALA
+# -------------------------
 
 class ReservaSala(Servicio):
 
     def __init__(self, nombre, precio_hora, capacidad):
-
         super().__init__(nombre, precio_hora)
+
+        if capacidad <= 0:
+            raise ValueError("La capacidad debe ser mayor que cero")
 
         self.capacidad = capacidad
 
-    def mostrar_info(self):
-
-        return (
-            f"Reserva de Sala: {self.nombre} | "
-            f"Capacidad: {self.capacidad} personas | "
-            f"Precio: ${self.precio_hora}/hora"
-        )
+    def describir(self):
+        return f"Sala con capacidad para {self.capacidad} personas"
 
 
-
-# ALQUILER DEL EQUIPO
-
+# -------------------------
+# ALQUILER DE EQUIPO
+# -------------------------
 
 class AlquilerEquipo(Servicio):
 
-    def __init__(self, nombre, precio_hora, tipo_equipo):
-
+    def __init__(self, nombre, precio_hora, cantidad):
         super().__init__(nombre, precio_hora)
 
-        self.tipo_equipo = tipo_equipo
+        if cantidad <= 0:
+            raise ValueError("La cantidad debe ser mayor que cero")
 
-    def mostrar_info(self):
+        self.cantidad = cantidad
 
-        return (
-            f"Alquiler de Equipo: {self.nombre} | "
-            f"Tipo: {self.tipo_equipo} | "
-            f"Precio: ${self.precio_hora}/hora"
-        )
+    def describir(self):
+        return f"Alquiler de {self.cantidad} equipos"
 
 
-
+# -------------------------
 # ASESORÍA TÉCNICA
-
+# -------------------------
 
 class AsesoriaTecnica(Servicio):
 
     def __init__(self, nombre, precio_hora, especialista):
-
         super().__init__(nombre, precio_hora)
+
+        if not especialista.strip():
+            raise ValueError("El especialista no puede estar vacío")
 
         self.especialista = especialista
 
-    def mostrar_info(self):
-
-        return(
-            f"Asesoría Técnica: {self.nombre} | "
-            f"Especialista: {self.especialista} | "
-            f"Precio: ${self.precio_hora}/hora")
+    def describir(self):
+        return f"Asesoría con especialista: {self.especialista}"

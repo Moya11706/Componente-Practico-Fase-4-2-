@@ -10,10 +10,11 @@ class Entidad(ABC):
             self._codigo = str(codigo).strip()
 
     
+    @property
     def codigo(self):
         return self._codigo
 
- 
+    @staticmethod
     def validar_texto(valor, campo):
         if not isinstance(valor, str) or not valor.strip():
             raise ValueError(f"El campo '{campo}' no puede estar vacío.")

@@ -1,7 +1,13 @@
-from clientes import Cliente
-from servicios import *
-from reservas import Reserva
+import sys
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from cliente import Cliente
+from servicio import *
+from reserva import Reserva
 from excepciones import *
+import datetime
 
 
 def guardar_log(mensaje):
@@ -39,7 +45,7 @@ except Exception as e:
 
 # OPERACIÓN 4
 try:
-    servicio2 = AlquilerEquipos("Computadores", 50000, 2)
+    servicio2 = AlquilerEquipo("Computadores", 50000, 2)
     guardar_log("Servicio de equipos creado")
 except Exception as e:
     guardar_log(str(e))
@@ -47,7 +53,7 @@ except Exception as e:
 
 # OPERACIÓN 5
 try:
-    servicio3 = AsesoriaEspecializada("Asesoría Python", 120000, 4)
+    servicio3 = AsesoriaTecnica("Asesoría Python", 120000, "Experto Python")
     guardar_log("Servicio de asesoría creado")
 except Exception as e:
     guardar_log(str(e))
@@ -55,7 +61,7 @@ except Exception as e:
 
 # OPERACIÓN 6
 try:
-    reserva1 = Reserva(cliente1, servicio1, 3)
+    reserva1 = Reserva(cliente1, servicio1, datetime.date.today(), horas=3)
     reserva1.confirmar()
     lista_reservas.append(reserva1)
     guardar_log("Reserva 1 confirmada")
@@ -65,7 +71,7 @@ except Exception as e:
 
 # OPERACIÓN 7
 try:
-    reserva2 = Reserva(cliente1, servicio2, 2)
+    reserva2 = Reserva(cliente1, servicio2, datetime.date.today(), horas=2)
     lista_reservas.append(reserva2)
     guardar_log("Reserva 2 creada")
 except Exception as e:
@@ -74,7 +80,7 @@ except Exception as e:
 
 # OPERACIÓN 8
 try:
-    reserva3 = Reserva(cliente1, servicio3, -1)
+    reserva3 = Reserva(cliente1, servicio3, datetime.date.today(), horas=-1)
 except Exception as e:
     print(e)
     guardar_log(str(e))
