@@ -12,3 +12,13 @@ Reserva 2 creada
 Las horas deben ser mayores a 0
 Pago procesado
 Reserva cancelada
+Cliente Paula registrado
+El campo 'nombre' no puede estar vacío.
+Servicio Sala VIP creado
+Servicio de equipos creado
+Servicio de asesoría creado
+Reserva 1 confirmada
+name 'serviciog2' is not defined
+Las horas deben ser mayores a 0
+Pago procesado
+name 'reserva2' is not defined
