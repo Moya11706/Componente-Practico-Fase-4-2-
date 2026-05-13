@@ -1,109 +1,192 @@
-import sys
-import os
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
+# SIMULACIONES DEL SISTEMA
 from cliente import Cliente
-from servicio import *
-from reserva import Reserva
-from excepciones import *
-import datetime
+from servicio import ReservaSala, AlquilerEquipo, AsesoriaTecnica
 
 
-def guardar_log(mensaje):
-
-    with open("logs.txt", "a", encoding="utf-8") as archivo:
-        archivo.write(mensaje + "\n")
+print("\n========== SIMULACIONES DEL SISTEMA ==========")
 
 
-lista_reservas = []
+
+# SIMULACIÓN 1
+# Registro válido de cliente
 
 
-# OPERACIÓN 1
+print("\n--- SIMULACIÓN 1: CLIENTE VÁLIDO ---")
+
 try:
-    cliente1 = Cliente("Paula", "paula@gmail.com", "300111111")
-    guardar_log("Cliente Paula registrado")
+
+    cliente1 = Cliente("Juan Pérez", "1023456789")
+
+    print("Cliente registrado correctamente")
+    print(cliente1)
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 2
+
+# SIMULACIÓN 2
+# Registro inválido de cliente
+
+
+print("\n--- SIMULACIÓN 2: CLIENTE INVÁLIDO ---")
+
 try:
-    cliente2 = Cliente("", "correo", "123")
+
+    cliente2 = Cliente("", "12345")
+
+    print(cliente2)
+
 except Exception as e:
-    print(e)
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 3
+# SIMULACIÓN 3
+# Servicio válido
+
+
+print("\n--- SIMULACIÓN 3: SERVICIO VÁLIDO ---")
+
 try:
-    servicio1 = ReservaSala("Sala VIP", 100000, 3)
-    guardar_log("Servicio Sala VIP creado")
+
+    servicio1 = ReservaSala("Sala VIP", 50000, 20)
+
+    print(servicio1.mostrar_info())
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 4
+
+# SIMULACIÓN 4
+# Servicio inválido
+
+
+print("\n--- SIMULACIÓN 4: SERVICIO INVÁLIDO ---")
+
 try:
-    servicio2 = AlquilerEquipo("Computadores", 50000, 2)
-    guardar_log("Servicio de equipos creado")
+
+    servicio2 = ReservaSala("Sala Empresarial", -1000, 15)
+
+    print(servicio2.mostrar_info())
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 5
+
+# SIMULACIÓN 5
+# Reserva exitosa
+
+
+print("\n--- SIMULACIÓN 5: CÁLCULO EXITOSO ---")
+
 try:
-    servicio3 = AsesoriaTecnica("Asesoría Python", 120000, "Experto Python")
-    guardar_log("Servicio de asesoría creado")
+
+    costo = servicio1.calcular_costo(2)
+
+    print(f"Costo total: ${costo}")
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 6
+# SIMULACIÓN 6
+# Horas inválidas
+
+
+print("\n--- SIMULACIÓN 6: HORAS INVÁLIDAS ---")
+
 try:
-    reserva1 = Reserva(cliente1, servicio1, datetime.date.today(), horas=3)
-    reserva1.confirmar()
-    lista_reservas.append(reserva1)
-    guardar_log("Reserva 1 confirmada")
+
+    costo = servicio1.calcular_costo(0)
+
+    print(costo)
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 7
+
+# SIMULACIÓN 7
+# Alquiler de equipo válido
+
+
+print("\n--- SIMULACIÓN 7: ALQUILER EQUIPO ---")
+
 try:
-    reserva2 = Reserva(cliente1, serviciog2, datetime.date.today(), horas=2)
-    lista_reservas.append(reserva2)
-    guardar_log("Reserva 2 creada")
+
+    equipo1 = AlquilerEquipo("Computadores", 30000, "Portátiles")
+
+    print(equipo1.mostrar_info())
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 8
+
+# SIMULACIÓN 8
+# Asesoría técnica válida
+
+print("\n--- SIMULACIÓN 8: ASESORÍA TÉCNICA ---")
+
 try:
-    reserva3 = Reserva(cliente1, servicio3, datetime.date.today(), horas=-1)
+
+    asesoria1 = AsesoriaTecnica("Soporte TI", 40000, "Ingeniero de Sistemas")
+
+    print(asesoria1.mostrar_info())
+
 except Exception as e:
-    print(e)
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 9
+
+# SIMULACIÓN 9
+# Servicio con nombre vacío
+
+print("\n--- SIMULACIÓN 9: NOMBRE VACÍO ---")
+
 try:
-    total = reserva1.procesar_pago(0.19)
-    print("Total a pagar:", total)
-    guardar_log("Pago procesado")
+
+    servicio3 = ReservaSala("", 20000, 10)
+
+    print(servicio3.mostrar_info())
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-# OPERACIÓN 10
+# SIMULACIÓN 10
+# Verificar continuidad del sistema
+
+
+print("\n--- SIMULACIÓN 10: CONTINUIDAD DEL SISTEMA ---")
+
 try:
-    reserva2.cancelar()
-    guardar_log("Reserva cancelada")
+
+    servicio4 = ReservaSala("Sala Multimedia", 60000, 30)
+
+    print(servicio4.mostrar_info())
+
+    costo = servicio4.calcular_costo(3)
+
+    print(f"Costo total: ${costo}")
+
+    print("El sistema continúa funcionando correctamente.")
+
 except Exception as e:
-    guardar_log(str(e))
+
+    print("Error:", e)
 
 
-print("\nLISTA DE RESERVAS")
-
-for reserva in lista_reservas:
-    reserva.mostrar_reserva()
+print("\n========== FIN DE LAS SIMULACIONES ==========")
