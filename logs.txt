@@ -22,3 +22,30 @@ name 'serviciog2' is not defined
 Las horas deben ser mayores a 0
 Pago procesado
 name 'reserva2' is not defined
+Cliente Paula registrado
+Cliente Paula registrado
+Cliente Paula registrado
+El campo 'nombre' no puede estar vacío.
+Servicio Sala VIP creado
+El campo 'nombre' no puede estar vacío.
+Servicio de asesoría creado
+Servicio Sala VIP creado
+El campo 'nombre' no puede estar vacío.
+Servicio de asesoría creado
+Servicio Sala VIP creado
+Servicio de equipos creado
+Servicio de asesoría creado
+Reserva 1 confirmada
+Reserva 1 confirmada
+name 'serviciog2' is not defined
+name 'serviciog2' is not defined
+Las horas deben ser mayores a 0
+Las horas deben ser mayores a 0
+
+Las horas deben ser mayores a 0
+Pago procesado
+name 'reserva2' is not defined
+Pago procesado
+Pago procesado
+name 'reserva2' is not defined
+name 'reserva2' is not defined
